@@ -1,0 +1,320 @@
+# LuxeLoop Project - Cursor Rules
+
+You are an expert full-stack developer working on the LuxeLoop luxury clothing rental/resale inventory management system. Follow these established patterns and conventions.
+
+## 🎯 Project Overview
+- **Domain**: Luxury designer clothing rental & resale
+- **Tech Stack**: Next.js 14+ (App Router), TypeScript, Tailwind CSS, React
+- **Design Philosophy**: Sophisticated, premium, elegant UI with luxury aesthetics
+- **Target Users**: Boutique owners, inventory managers
+
+## 🏗️ Architecture & Structure
+
+### File Organization
+```
+app/
+├── layout.tsx              # Root layout with luxury theme
+├── page.tsx               # Homepage with inventory overview
+├── globals.css            # Global styles with luxury design system
+├── components/            # Reusable UI components
+│   ├── InventoryForm.tsx  # Main inventory management form
+│   └── Receipt.tsx        # PDF-ready receipt component
+├── inventory/
+│   └── page.tsx          # Inventory management page
+└── receipt/[id]/
+    └── page.tsx          # Dynamic receipt generation
+```
+
+### Component Naming Conventions
+- Use PascalCase for React components
+- Descriptive names reflecting luxury domain (e.g., `LuxuryButton`, `PremiumCard`)
+- Component files should match component names exactly
+
+## 🎨 Design System & Styling
+
+### Color Palette (Tailwind Config)
+```typescript
+// Sophisticated blacks and grays
+luxe-obsidian: '#0B0B0F'    // Deep black
+luxe-charcoal: '#1A1A1F'    // Dark charcoal
+luxe-slate: '#2A2A35'       // Elegant slate
+luxe-ash: '#3A3A45'         // Refined ash
+luxe-dove: '#6B6B7B'        // Soft dove gray
+luxe-silver: '#9CA3AF'      // Premium silver
+luxe-pearl: '#E5E7EB'       // Pearl white
+luxe-ivory: '#F9FAFB'       // Ivory
+
+// Premium golds
+luxe-bronze: '#CD7F32'      // Rich bronze
+luxe-champagne: '#F7E7CE'   // Champagne gold
+luxe-gold: '#D4AF37'        // Classic gold
+luxe-amber: '#FFBF00'       // Amber gold
+
+// Emerald accents (emerald-500 to emerald-900)
+// Luxury creams (cream, linen, vanilla)
+```
+
+### Typography Hierarchy
+```css
+font-playfair: Primary heading font (elegant serif)
+font-inter: Body text font (clean sans-serif)  
+font-cormorant: Secondary accent font (luxury serif)
+```
+
+### Background Gradients
+- `bg-luxe-gradient`: Main dark gradient
+- `bg-luxe-gold`: Premium gold gradient
+- `bg-luxe-emerald`: Sophisticated emerald gradient
+- `bg-luxe-card`: Subtle cream card background
+
+### Component Styling Patterns
+```tsx
+// Card Components
+className="bg-white/95 backdrop-blur-sm border border-luxe-pearl/20 rounded-2xl shadow-2xl"
+
+// Buttons - Primary (Gold)
+className="bg-luxe-gold hover:bg-luxe-amber text-luxe-obsidian font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+
+// Buttons - Secondary (Emerald)
+className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300"
+
+// Form Inputs
+className="w-full px-4 py-3 border border-luxe-silver/30 rounded-xl focus:ring-2 focus:ring-luxe-gold/50 focus:border-luxe-gold transition-all duration-200 bg-white/80"
+
+// Headings
+className="text-4xl font-bold font-playfair text-luxe-obsidian mb-2"
+```
+
+## 📝 Code Standards
+
+### TypeScript
+- **Always use TypeScript** - No plain JavaScript files
+- Define proper interfaces for all data structures
+- Use type assertions sparingly, prefer type guards
+
+### React Patterns
+```tsx
+// Component Structure
+import React from 'react'
+import { ComponentProps } from './types'
+
+interface ComponentNameProps {
+  // Define props with proper types
+}
+
+export default function ComponentName({ props }: ComponentNameProps) {
+  // Component logic
+  return (
+    <div className="luxury-styling">
+      {/* JSX content */}
+    </div>
+  )
+}
+
+// State Management
+const [items, setItems] = useState<ClothingItem[]>([])
+
+// Event Handlers
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  // Handle form submission
+}
+```
+
+### Data Models
+```typescript
+// Clothing Item Interface
+interface ClothingItem {
+  id: string              // Format: CLT-YYYYMMDD-XXX
+  itemName: string        // Designer piece name
+  brand: string           // Luxury brand name
+  category: 'dress' | 'top' | 'bottom' | 'outerwear' | 'accessory'
+  size: string            // Size designation
+  color: string           // Primary color
+  originalPrice: number   // Original retail price
+  rentalPrice: number     // Daily rental price
+  condition: 'excellent' | 'very-good' | 'good' | 'fair'
+  status: 'available' | 'rented' | 'maintenance' | 'sold'
+  description?: string    // Optional detailed description
+  images?: string[]       // Optional image URLs
+  dateAdded: string       // ISO date string
+  lastRented?: string     // ISO date string
+}
+
+// Receipt Interface
+interface Receipt {
+  id: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  items: ClothingItem[]
+  totalAmount: number
+  transactionType: 'rental' | 'sale'
+  rentalDuration?: number // Days for rental
+  depositAmount?: number  // Security deposit
+  dateCreated: string
+}
+```
+
+### Inventory Management Patterns
+```tsx
+// ID Generation
+const generateClothingID = (): string => {
+  const today = new Date()
+  const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '')
+  const randomNum = Math.floor(Math.random() * 900) + 100
+  return `CLT-${dateStr}-${randomNum}`
+}
+
+// Local Storage Management
+const STORAGE_KEY = 'luxeloop-inventory'
+
+const saveToStorage = (items: ClothingItem[]) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+}
+
+const loadFromStorage = (): ClothingItem[] => {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  return stored ? JSON.parse(stored) : []
+}
+```
+
+## 🖨️ Receipt Generation
+
+### Receipt Component Structure
+- Use CSS Grid for precise layout control
+- Include QR codes for item tracking
+- Luxury branding with gold accents
+- Print-optimized styles with `@media print`
+
+### Required Receipt Elements
+1. **Header**: Luxeloop branding with tagline
+2. **Customer Info**: Name, email, phone
+3. **Item Details**: ID, name, brand, price with QR codes
+4. **Financial Summary**: Subtotal, tax, deposit, total
+5. **Footer**: Terms, contact info, thank you message
+
+## 🔄 State Management
+
+### Form State Patterns
+```tsx
+// Initial form state
+const initialFormState: ClothingItem = {
+  id: '',
+  itemName: '',
+  brand: '',
+  category: 'dress',
+  size: '',
+  color: '',
+  originalPrice: 0,
+  rentalPrice: 0,
+  condition: 'excellent',
+  status: 'available',
+  description: '',
+  dateAdded: new Date().toISOString(),
+}
+
+// Reset form after submission
+const resetForm = () => {
+  setFormData(initialFormState)
+}
+```
+
+### Inventory Operations
+- **Add Item**: Generate unique ID, validate data, save to storage
+- **Edit Item**: Preserve ID, update fields, maintain history
+- **Delete Item**: Confirm action, remove from storage
+- **Status Updates**: Track rental status, availability
+
+## 🎯 UX/UI Guidelines
+
+### Animation & Transitions
+```css
+/* Standard transition duration */
+transition-all duration-300
+
+/* Hover effects for interactive elements */
+hover:shadow-xl hover:scale-105
+
+/* Loading states with shimmer effect */
+animate-shimmer
+```
+
+### Responsive Design
+- Mobile-first approach
+- Use Tailwind responsive prefixes (sm:, md:, lg:, xl:)
+- Ensure forms work well on all screen sizes
+- Optimize receipt layout for printing
+
+### Accessibility
+- Proper semantic HTML structure
+- ARIA labels for form controls
+- Focus management for keyboard navigation
+- Color contrast compliance for luxury theme
+
+## 🚀 Performance & Optimization
+
+### Next.js Best Practices
+- Use App Router for all new routes
+- Implement proper loading states
+- Optimize images with Next.js Image component
+- Use dynamic imports for heavy components
+
+### Local Storage Management
+- Implement proper error handling for storage operations
+- Validate data before saving
+- Provide fallbacks for storage failures
+
+## 🔒 Security & Data Handling
+
+### Client-Side Data Protection
+- Sanitize all user inputs
+- Validate form data before processing
+- Implement proper error boundaries
+- Handle edge cases gracefully
+
+### Privacy Considerations
+- No sensitive data in localStorage for production
+- Implement proper data export/import features
+- Consider data retention policies
+
+## 📱 Mobile Optimization
+
+### Touch-Friendly Design
+- Minimum 44px touch targets
+- Optimize form inputs for mobile keyboards
+- Implement swipe gestures where appropriate
+- Ensure receipt generation works on mobile
+
+## 🎨 Branding Guidelines
+
+### Brand Voice
+- Sophisticated and premium
+- Professional yet approachable
+- Emphasis on luxury and quality
+- Clear and concise communication
+
+### Visual Elements
+- Consistent use of luxury color palette
+- Elegant typography combinations
+- Subtle animations and micro-interactions
+- Premium feeling throughout the experience
+
+## 🧪 Testing Approach
+
+### Manual Testing Checklist
+- Form validation edge cases
+- Receipt generation and printing
+- Mobile responsiveness
+- Cross-browser compatibility
+- Local storage functionality
+
+### Error Handling
+- Graceful degradation for missing data
+- Clear error messages for users
+- Fallback states for failed operations
+- Proper loading states
+
+---
+
+**Remember**: Every interaction should feel premium and sophisticated, reflecting the luxury nature of the Luxeloop brand. Prioritize user experience, visual elegance, and functional reliability in all implementations. 
