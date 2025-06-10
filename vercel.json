@@ -1,8 +1,5 @@
 {
   "framework": "nextjs",
-  "engines": {
-    "node": "18.x"
-  },
   "functions": {
     "app/**": {
       "maxDuration": 10
