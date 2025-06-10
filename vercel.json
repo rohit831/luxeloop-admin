@@ -1,0 +1,12 @@
+{
+  "name": "luxeloop-inventory",
+  "version": 2,
+  "buildCommand": "yarn build",
+  "framework": "nextjs",
+  "installCommand": "yarn install",
+  "functions": {
+    "app/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+} 

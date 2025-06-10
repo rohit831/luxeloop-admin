@@ -18,7 +18,7 @@ A modern, sophisticated inventory management system for premium designer clothin
 ### Prerequisites
 
 - Node.js 18.0 or later
-- npm, yarn, or pnpm package manager
+- Yarn package manager
 
 ### Installation
 
@@ -30,20 +30,12 @@ A modern, sophisticated inventory management system for premium designer clothin
 
 2. **Install dependencies**
    ```bash
-   npm install
-   # or
    yarn install
-   # or
-   pnpm install
    ```
 
 3. **Run the development server**
    ```bash
-   npm run dev
-   # or
    yarn dev
-   # or
-   pnpm dev
    ```
 
 4. **Open your browser**
