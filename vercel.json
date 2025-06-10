@@ -1,10 +1,10 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
   "framework": "nextjs",
+  "engines": {
+    "node": "18.x"
+  },
   "functions": {
-    "app/api/**": {
+    "app/**": {
       "maxDuration": 10
     }
   },
